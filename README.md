@@ -25,7 +25,7 @@ O projeto consiste em um contêiner Docker que executa o Flan Scan para varrer a
 ## Como Usar
 
 1. Clone este repositório para o seu ambiente.
-2. Edite o arquivo `flan/shared/ips.txt` para incluir os endereços IP ou as redes que deseja escanear.
+2. Entre na pasta do projeto e edite o arquivo `flan/shared/ips.txt` para incluir os endereços IP ou as redes que deseja escanear.
 3. Construa a imagem Docker com o comando `docker build -t gat_images/gat_scan .`.
 4. Execute o contêiner com o comando:
 
