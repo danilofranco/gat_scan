@@ -34,19 +34,20 @@ function upload {
 }
 
 function get_filename(){
-    echo "$1" | tr -d '"' | tr ' ' '_' | tr '/' '-'
+    echo "$1" | tr -d '"' | tr ' /' '_-'
 }
 
-echo "Entrando no arquivo"
+echo "Iniciando leitura do arquivo ips.txt"
 mkdir $root_dir$xml_dir
-while IFS= read -r line
-do
+
+IFS=$'\n'  
+for line in $(cat /shared/ips.txt); do
   echo "Scanning IP: $line"
   current_time=$(date "+%Y.%m.%d-%H.%M.%S")
   filename=$(get_filename $line)".xml"
-  nmap -sV -oX $root_dir$xml_dir/$filename -oN - -v1 $@ --script=vulners/vulners.nse $line
+  nmap -sV -oX "$root_dir$xml_dir/$filename" -oN - -v1 --script=vulners/vulners.nse "$line"
   upload $xml_dir/$filename
-done < /shared/ips.txt
+done
 
 python /output_report.py $root_dir$xml_dir $root_dir$report_file /shared/ips.txt
 if [[ $report_extension = "tex" ]]
