@@ -60,7 +60,3 @@ O arquivo de log para as tentativas de integração está localizado em `flan/sh
 ## Contribuindo
 
 Sua contribuição é bem-vinda! Sinta-se à vontade para abrir issues ou pull requests para sugerir melhorias ou adicionar novas funcionalidades.
-
-## Licença
-
-Este projeto é licenciado sob a [Licença MIT](LICENSE).
