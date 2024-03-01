@@ -25,7 +25,11 @@ O projeto consiste em um contêiner Docker que executa o Flan Scan para varrer a
 ## Como Usar
 
 1. Clone este repositório para o seu ambiente.
-2. Entre na pasta do projeto e edite o arquivo `flan/shared/ips.txt` para incluir os endereços IP ou as redes que deseja escanear.
+2. Entre na pasta do projeto e edite o arquivo `flan/shared/ips.txt` para incluir os endereços IP ou as redes que deseja escanear. Exemplo abaixo:
+    ```
+    192.168.0.0/24
+    10.15.20.3
+    ````
 3. Construa a imagem Docker com o comando `docker build -t gat_images/gat_scan .`.
 4. Execute o contêiner com o comando:
 
@@ -47,6 +51,11 @@ O projeto consiste em um contêiner Docker que executa o Flan Scan para varrer a
 Certifique-se de substituir `host_do_gat_core`, `sua_chave_sem_BEARER` pelos valores apropriados para o seu ambiente.
 
    Substitua `host_do_gat_core` pelo endereço do seu GAT Core e `sua_chave_sem_BEARER` pela sua chave de API do GAT Core.
+
+## Registro de Logs
+
+O arquivo de log para as tentativas de integração está localizado em `flan/shared/logs.txt`.
+
 
 ## Contribuindo
 

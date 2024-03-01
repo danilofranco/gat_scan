@@ -12,7 +12,7 @@ echo "Executando o Flan Scan..."
 # Executa o script de integração com o GAT Core
 echo "Executando o script de integração com o GAT Core..."
 cd /gat_integration
-python3 main.py --path /shared/reports --gat_api_host $GAT_API_HOST --gat_api_key $GAT_API_KEY_BASE64 --custom_parser_name Flan
+python3 main.py --path /shared/reports --gat_api_host $GAT_API_HOST --gat_api_key $GAT_API_KEY_BASE64 --custom_parser_name Flan --delete_source
 
 echo "Script de entrada concluído."
 exec "$@"

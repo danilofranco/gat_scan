@@ -4,9 +4,19 @@ import json
 import csv
 import requests
 import math
+from datetime import datetime
 
 
 CSVS_PATH = '../csvs'
+LOG_FILE = '/shared/logs.txt'
+
+def log_message(message):
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    log_entry = '[{}] {}'.format(timestamp, message)
+    with open(LOG_FILE, 'a') as log_file:
+        log_file.write(log_entry + '\n')
+    print(log_entry)
+        
 
 def flan_risk_to_gat_risk(risk):
     if risk < 0 or risk > 10:
@@ -90,6 +100,15 @@ def send_to_gat_api(parsed_files, gat_api_host, gat_api_key, custom_parser_name,
     for key, value in parsed_files.items():
         # [0] => Arquivo JSON
         # [1] => Arquivo CSV
+        with open(value[1], 'r') as csv_file:
+            lines = csv_file.readlines()
+            if len(lines) <= 1:
+                log_message('CSV {} contém apenas o cabeçalho ou está vazio. Ignorando envio.'.format(value[1]))
+                if delete_source:
+                    os.remove(value[0])
+                os.remove(value[1])
+                continue
+        
         with open(value[1], 'rb') as csv_file:
             file_dict = {'file': (os.path.basename(value[1]), csv_file, "text/csv", {'Expires': "0"})}
             try:
@@ -97,11 +116,11 @@ def send_to_gat_api(parsed_files, gat_api_host, gat_api_key, custom_parser_name,
                 response = requests.post(gat_api_full_url, headers=headers, files=file_dict)
 
                 if response.status_code == 200:
-                    print('CSV {} enviado com sucesso para a API do GAT Core.'.format(value[1]))
+                    log_message('CSV {} enviado com sucesso para a API do GAT Core.'.format(value[1]))
                     if delete_source:
                         os.remove(value[0])
                     os.remove(value[1])
                 else:
-                    print('Erro ao enviar o CSV {} para a API do GAT. Status code: {}'.format(value[1], response.status_code))
+                    log_message('Erro ao enviar o CSV {} para a API do GAT. Status code: {}'.format(value[1], response.status_code))
             except Exception as e:
-                print('Erro ao enviar o CSV {} para a API do GAT. Exception: {}'.format(value[1], e))
+                log_message('Erro ao enviar o CSV {} para a API do GAT. Exception: {}'.format(value[1], e))
